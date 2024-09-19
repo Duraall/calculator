@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #121212;
+        font-family: Arial, sans-serif;
+        margin: 0;
+      }
+      .cardDiv {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+
+        border: 3px solid #ffffff;
+        box-shadow:
+          0 4px 8px rgba(0, 0, 0, 0.3),
+          0 0 15px rgb(255, 255, 255);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+      input {
+        padding: 10px;
+        text-align: center;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 3px solid #ffffff;
+        background: #1e1e1e;
+        color: #fff;
+        box-shadow: 0 0 8px #ffffff;
+        width: calc(100% - 22px);
+        box-sizing: border-box;
+      }
+      .operator {
+        text-transform: uppercase;
+      }
+      button {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: #00ffcc;
+        color: #121212;
+        cursor: pointer;
+        width: calc(100% - 22px);
+        box-sizing: border-box;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #00cc99;
+      }
+      .result {
+        margin-top: 20px;
+      }
+      .error {
+        border-color: red;
+        box-shadow: 0 0 8px red;
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cardDiv">
+      <input
+        id="input1"
+        type="text"
+        min="0"
+        placeholder="Input your 1st number"
+      />
+      <input
+        class="operator"
+        id="operator"
+        type="text"
+        maxlength="1"
+        placeholder="Operator"
+      />
+      <input
+        id="input2"
+        type="number"
+        min="0"
+        placeholder="Input your 2nd number"
+      />
+      <div class="result">
+        <input id="result" type="text" placeholder="Result" readonly />
+      </div>
+      <button id="button">Calculate</button>
+    </div>
+
+    <script>
+      const button = document.getElementById("button");
+      button.addEventListener("click", () => {
+        const num1 = parseFloat(document.getElementById("input1").value);
+        const num2 = parseFloat(document.getElementById("input2").value);
+        const op = document.getElementById("operator").value;
+        const result = document.getElementById("result");
+
+        let res;
+        result.classList.remove("error");
+
+        if (isNaN(num1) || isNaN(num2)) {
+          result.value = "One or both inputs are Not a Number";
+          result.classList.add("error");
+          return;
+        }
+        if (num1 < 0 || num2 < 0) {
+          result.value = "Negative numbers are Not allowed";
+          result.classList.add("error");
+          return;
+        }
+
+        switch (op) {
+          case "+":
+            res = num1 + num2;
+            break;
+          case "-":
+            if (num1 < num2) {
+              res = "Cannot subtract a larger number from a smaller number";
+              result.classList.add("error");
+            } else {
+              res = num1 - num2;
+            }
+            break;
+          case "*":
+            res = num1 * num2;
+            break;
+          case "/":
+            if (num2 === 0) {
+              res = "Cannot divide by zero";
+              result.classList.add("error");
+            } else if (num1 < num2) {
+              res = "Cannot divide a larger number by a smaller number";
+              result.classList.add("error");
+            } else {
+              res = num1 / num2;
+            }
+            break;
+          default:
+            res = "Invalid operator";
+            result.classList.add("error");
+        }
+
+        result.value = res;
+      });
+    </script>
+  </body>
+</html>
